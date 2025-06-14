@@ -1,0 +1,85 @@
+plugins {
+    id 'com.gradleup.shadow'
+}
+
+architectury {
+    platformSetupLoomIde()
+    fabric()
+}
+
+configurations {
+    common {
+        canBeResolved = true
+        canBeConsumed = false
+    }
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentFabric.extendsFrom common
+
+    // Files in this configuration will be bundled into your mod using the Shadow plugin.
+    // Don't use the `shadow` configuration from the plugin itself as it's meant for excluding files.
+    shadowBundle {
+        canBeResolved = true
+        canBeConsumed = false
+    }
+}
+
+repositories {
+    maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven" }
+    maven {
+        url "https://maven.jamieswhiteshirt.com/libs-release"
+        content {
+            includeGroup "com.jamieswhiteshirt"
+        }
+    }
+    maven { url = "https://mvn.devos.one/releases" }
+    maven { url = "https://mvn.devos.one/snapshots" }
+}
+
+dependencies {
+    modImplementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
+
+    // Fabric API. This is technically optional, but you probably want it anyway.
+    modImplementation "net.fabricmc.fabric-api:fabric-api:$rootProject.fabric_api_version"
+
+    common(project(path: ':common', configuration: 'namedElements')) { transitive false }
+    shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
+
+    annotationProcessor("io.github.llamalad7:mixinextras-fabric:$rootProject.mixinextras_version")
+    implementation("io.github.llamalad7:mixinextras-fabric:$rootProject.mixinextras_version")
+    include("io.github.llamalad7:mixinextras-fabric:$rootProject.mixinextras_version")
+
+    modImplementation("com.simibubi.create:create-fabric-$minecraft_version:$create_fabric_version") { transitive false }
+    modImplementation("com.jozufozu.flywheel:flywheel-fabric-${minecraft_version}:${flywheel_fabric_version}")
+    modImplementation("com.tterrag.registrate_fabric:Registrate:${registrate_fabric_version}")
+    modImplementation("io.github.fabricators_of_create.Porting-Lib:accessors:$portinglib_fabric_version")
+    modImplementation("io.github.fabricators_of_create.Porting-Lib:base:$portinglib_fabric_version")
+    modImplementation("io.github.fabricators_of_create.Porting-Lib:entity:$portinglib_fabric_version")
+    modImplementation("io.github.fabricators_of_create.Porting-Lib:extensions:$portinglib_fabric_version")
+    modImplementation("io.github.fabricators_of_create.Porting-Lib:networking:$portinglib_fabric_version")
+    modImplementation("io.github.fabricators_of_create.Porting-Lib:obj_loader:$portinglib_fabric_version")
+    modImplementation("io.github.fabricators_of_create.Porting-Lib:tags:$portinglib_fabric_version")
+    modImplementation("io.github.fabricators_of_create.Porting-Lib:transfer:$portinglib_fabric_version")
+    modImplementation("io.github.fabricators_of_create.Porting-Lib:models:$portinglib_fabric_version")
+    modImplementation("io.github.fabricators_of_create.Porting-Lib:client_events:$portinglib_fabric_version")
+    modApi("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:$forgeconfigapiport_fabric_version")
+    modImplementation("io.github.tropheusj:milk-lib:$milklib_fabric_version")
+    modImplementation("com.jamieswhiteshirt:reach-entity-attributes:$reachentityattributes_fabric_version")
+}
+
+processResources {
+    inputs.property 'version', project.version
+
+    filesMatching('fabric.mod.json') {
+        expand version: project.version
+    }
+}
+
+shadowJar {
+    configurations = [project.configurations.shadowBundle]
+    archiveClassifier = 'dev-shadow'
+}
+
+remapJar {
+    inputFile.set shadowJar.archiveFile
+}

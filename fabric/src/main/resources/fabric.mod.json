@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "createportalintegration",
+  "version": "${version}",
+  "name": "Create Portal Integration",
+  "description": "Add portal support to cart contraption, coupled cart, and compatibility with other portal mods.",
+  "authors": [
+    "mahmudindev"
+  ],
+  "contact": {
+    "homepage": "https://github.com/mahmudindev",
+    "sources": "https://github.com/mahmudindev/mcmod-createportalintegration"
+  },
+  "license": "ARR",
+  "icon": "assets/createportalintegration/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.github.mahmudindev.mcmod.createportalintegration.fabric.CreatePortalIntegrationFabric"
+    ],
+    "client": [
+      "com.github.mahmudindev.mcmod.createportalintegration.fabric.client.CreatePortalIntegrationFabricClient"
+    ]
+  },
+  "mixins": [
+    "createportalintegration.mixins.json",
+    "createportalintegration_platform.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.14",
+    "minecraft": "~1.20.1",
+    "java": ">=17",
+    "create": ">=0.5.0",
+    "passengersportalfix": ">=0.0.1"
+  },
+  "suggests": {
+    "fabric-api": "*"
+  }
+}

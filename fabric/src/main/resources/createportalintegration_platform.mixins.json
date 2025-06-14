@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "package": "com.github.mahmudindev.mcmod.createportalintegration.fabric.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "client": [
+  ],
+  "mixins": [
+    "EntityHMixin",
+    "EntityMixin",
+    "OrientedContraptionEntityMixin",
+    "compat.dimensionlink.AllPortalTracksHMixin",
+    "compat.worldportal.AllPortalTracksLMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "plugin": "com.github.mahmudindev.mcmod.createportalintegration.mixin.MixinConfigPlugin"
+}

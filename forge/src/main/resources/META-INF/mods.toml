@@ -1,0 +1,42 @@
+modLoader = "javafml"
+loaderVersion = "[47,)"
+issueTrackerURL = "https://github.com/mahmudindev/mcmod-createportalintegration/issues"
+license = "ARR"
+
+[[mods]]
+modId = "createportalintegration"
+version = "${version}"
+displayName = "Create Portal Integration"
+authors = "mahmudindev"
+description = '''
+Add portal support to cart contraption, coupled cart, and compatibility with other portal mods.
+'''
+logoFile = "assets/createportalintegration/icon.png"
+
+[[dependencies.createportalintegration]]
+modId = "forge"
+mandatory = true
+versionRange = "[47,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.createportalintegration]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.createportalintegration]]
+modId = "create"
+mandatory = true
+versionRange = "[0.5.0,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.createportalintegration]]
+modId = "passengersportalfix"
+mandatory = true
+versionRange = "[0.0.1,)"
+ordering = "NONE"
+side = "SERVER"
