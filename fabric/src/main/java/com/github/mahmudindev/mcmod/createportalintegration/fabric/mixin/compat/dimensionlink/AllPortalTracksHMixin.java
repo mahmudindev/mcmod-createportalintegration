@@ -3,8 +3,6 @@ package com.github.mahmudindev.mcmod.createportalintegration.fabric.mixin.compat
 import com.github.mahmudindev.mcmod.createportalintegration.compat.DimensionLinkCompat;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.simibubi.create.content.trains.track.AllPortalTracks;
-import com.simibubi.create.foundation.utility.BlockFace;
-import com.simibubi.create.foundation.utility.Pair;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -22,9 +20,9 @@ public abstract class AllPortalTracksHMixin {
     )
     private static ResourceKey<Level> netherOverworldKey(
             ResourceKey<Level> original,
-            Pair<ServerLevel, BlockFace> inbound
+            ServerLevel level
     ) {
-        return DimensionLinkCompat.getWorldOverworld(inbound.getFirst(), original);
+        return DimensionLinkCompat.getWorldOverworld(level, original);
     }
 
     @ModifyExpressionValue(
@@ -36,8 +34,8 @@ public abstract class AllPortalTracksHMixin {
     )
     private static ResourceKey<Level> netherNetherKey(
             ResourceKey<Level> original,
-            Pair<ServerLevel, BlockFace> inbound
+            ServerLevel level
     ) {
-        return DimensionLinkCompat.getWorldTheNether(inbound.getFirst(), original);
+        return DimensionLinkCompat.getWorldTheNether(level, original);
     }
 }

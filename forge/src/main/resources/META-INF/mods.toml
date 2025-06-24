@@ -30,7 +30,7 @@ side = "BOTH"
 [[dependencies.createportalintegration]]
 modId = "create"
 mandatory = true
-versionRange = "[0.5.0,)"
+versionRange = "[6.0.0,)"
 ordering = "NONE"
 side = "BOTH"
 

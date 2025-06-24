@@ -9,14 +9,13 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Cancellable;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
-import com.simibubi.create.AllMovementBehaviours;
+import com.simibubi.create.api.behaviour.movement.MovementBehaviour;
 import com.simibubi.create.content.contraptions.Contraption;
 import com.simibubi.create.content.contraptions.OrientedContraptionEntity;
 import com.simibubi.create.content.contraptions.actors.psi.PortableStorageInterfaceMovement;
-import com.simibubi.create.content.contraptions.behaviour.MovementBehaviour;
 import com.simibubi.create.content.contraptions.minecart.capability.CapabilityMinecartController;
 import com.simibubi.create.content.contraptions.minecart.capability.MinecartController;
-import com.simibubi.create.foundation.utility.Iterate;
+import net.createmod.catnip.data.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -189,7 +188,7 @@ public abstract class EntityHMixin {
 
             contraption.getActors().forEach(actor -> {
                 BlockState blockState = actor.left.state();
-                MovementBehaviour mb = AllMovementBehaviours.getBehaviour(blockState);
+                MovementBehaviour mb = MovementBehaviour.REGISTRY.get(blockState);
                 if (mb instanceof PortableStorageInterfaceMovement psim) {
                     psim.reset(actor.right);
                 }

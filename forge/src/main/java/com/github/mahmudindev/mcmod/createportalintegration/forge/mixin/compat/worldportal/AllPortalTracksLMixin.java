@@ -6,10 +6,10 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Cancellable;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
+import com.simibubi.create.api.contraption.train.PortalTrackProvider;
 import com.simibubi.create.content.contraptions.glue.SuperGlueEntity;
 import com.simibubi.create.content.trains.track.AllPortalTracks;
-import com.simibubi.create.foundation.utility.BlockFace;
-import com.simibubi.create.foundation.utility.Pair;
+import net.createmod.catnip.math.BlockFace;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -23,7 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(value = AllPortalTracks.class, priority = 750)
 public abstract class AllPortalTracksLMixin {
     @WrapOperation(
-            method = "standardPortalProvider",
+            method = "fromProbe",
             at = @At(
                     value = "NEW",
                     target = "com/simibubi/create/content/contraptions/glue/SuperGlueEntity"
@@ -34,14 +34,14 @@ public abstract class AllPortalTracksLMixin {
             Level world,
             AABB boundingBox,
             Operation<SuperGlueEntity> original,
-            Pair<ServerLevel, BlockFace> inbound,
-            @Cancellable CallbackInfoReturnable<Pair<ServerLevel, BlockFace>> cir,
+            ServerLevel serverLevel,
+            BlockFace inboundTrack,
+            @Cancellable CallbackInfoReturnable<PortalTrackProvider.Exit> cir,
             @Local(ordinal = 1) LocalRef<ServerLevel> otherLevel
     ) {
         SuperGlueEntity entity = original.call(world, boundingBox);
 
-        ServerLevel serverLevel = inbound.getFirst();
-        BlockPos blockPos = inbound.getSecond().getConnectedPos();
+        BlockPos blockPos = inboundTrack.getConnectedPos();
         if (serverLevel.getBlockState(blockPos).is(Blocks.NETHER_PORTAL)) {
             MinecraftServer server = serverLevel.getServer();
             ServerLevel serverLevelX = server.getLevel(WorldPortalCompat.getPortalNether(

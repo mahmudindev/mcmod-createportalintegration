@@ -32,7 +32,7 @@ subprojects {
 
         flatDir { dirs("mods") }
 
-        maven { url = "https://modmaven.dev" }
+        maven { url = "https://maven.createmod.net" }
     }
 
     loom {

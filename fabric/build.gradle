@@ -50,7 +50,9 @@ dependencies {
     include("io.github.llamalad7:mixinextras-fabric:$rootProject.mixinextras_version")
 
     modImplementation("com.simibubi.create:create-fabric-$minecraft_version:$create_fabric_version") { transitive false }
-    modImplementation("com.jozufozu.flywheel:flywheel-fabric-${minecraft_version}:${flywheel_fabric_version}")
+    modCompileOnly("dev.engine-room.flywheel:flywheel-fabric-api-${minecraft_version}:${flywheel_fabric_version}")
+    modRuntimeOnly("dev.engine-room.flywheel:flywheel-fabric-${minecraft_version}:${flywheel_fabric_version}")
+    modImplementation("net.createmod.ponder:Ponder-Fabric-${minecraft_version}:${ponder_fabric_version}")
     modImplementation("com.tterrag.registrate_fabric:Registrate:${registrate_fabric_version}")
     modImplementation("io.github.fabricators_of_create.Porting-Lib:accessors:$portinglib_fabric_version")
     modImplementation("io.github.fabricators_of_create.Porting-Lib:base:$portinglib_fabric_version")
@@ -61,7 +63,9 @@ dependencies {
     modImplementation("io.github.fabricators_of_create.Porting-Lib:tags:$portinglib_fabric_version")
     modImplementation("io.github.fabricators_of_create.Porting-Lib:transfer:$portinglib_fabric_version")
     modImplementation("io.github.fabricators_of_create.Porting-Lib:models:$portinglib_fabric_version")
+    modImplementation("io.github.fabricators_of_create.Porting-Lib:tool_actions:$portinglib_fabric_version")
     modImplementation("io.github.fabricators_of_create.Porting-Lib:client_events:$portinglib_fabric_version")
+    modImplementation("io.github.fabricators_of_create.Porting-Lib:brewing:$portinglib_fabric_version")
     modApi("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:$forgeconfigapiport_fabric_version")
     modImplementation("io.github.tropheusj:milk-lib:$milklib_fabric_version")
     modImplementation("com.jamieswhiteshirt:reach-entity-attributes:$reachentityattributes_fabric_version")
