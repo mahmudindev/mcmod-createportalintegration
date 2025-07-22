@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "createportalintegration",
   "version": "${version}",
-  "name": "Create Portal Integration",
+  "name": "Create: Portal Integration",
   "description": "Add portal support to cart contraption, coupled cart, and compatibility with other portal mods.",
   "authors": [
     "mahmudindev"
