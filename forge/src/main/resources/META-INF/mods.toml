@@ -6,7 +6,7 @@ license = "ARR"
 [[mods]]
 modId = "createportalintegration"
 version = "${version}"
-displayName = "Create Portal Integration"
+displayName = "Create: Portal Integration"
 authors = "mahmudindev"
 description = '''
 Add portal support to cart contraption, coupled cart, and compatibility with other portal mods.

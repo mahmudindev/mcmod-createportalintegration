@@ -44,10 +44,8 @@ public abstract class AllPortalTracksLMixin {
         BlockPos blockPos = inbound.getSecond().getConnectedPos();
         if (serverLevel.getBlockState(blockPos).is(Blocks.NETHER_PORTAL)) {
             MinecraftServer server = serverLevel.getServer();
-            ServerLevel serverLevelX = server.getLevel(WorldPortalCompat.getPortalNether(
+            ServerLevel serverLevelX = server.getLevel(WorldPortalCompat.setupPortal(
                     entity,
-                    serverLevel,
-                    blockPos,
                     otherLevel.get().dimension()
             ));
             if (serverLevelX != null) {
