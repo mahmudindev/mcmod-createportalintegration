@@ -1,4 +1,4 @@
-package com.github.mahmudindev.mcmod.createportalintegration.forge.mixin;
+package com.github.mahmudindev.mcmod.createportalintegration.neoforge.mixin;
 
 import com.github.mahmudindev.mcmod.createportalintegration.base.IOrientedContraptionEntity;
 import com.simibubi.create.content.contraptions.OrientedContraptionEntity;

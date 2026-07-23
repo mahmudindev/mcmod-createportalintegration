@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[47,)"
+loaderVersion = "[4,)"
 issueTrackerURL = "https://github.com/mahmudindev/mcmod-createportalintegration/issues"
 license = "ARR"
 
@@ -14,29 +14,28 @@ Add portal support to cart contraption, coupled cart, and compatibility with oth
 logoFile = "assets/createportalintegration/icon.png"
 
 [[dependencies.createportalintegration]]
-modId = "forge"
-mandatory = true
-versionRange = "[47,)"
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.createportalintegration]]
 modId = "minecraft"
-mandatory = true
-versionRange = "[1.20.1,)"
+type = "required"
+versionRange = "[1.21.1,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.createportalintegration]]
 modId = "create"
-mandatory = true
+type = "required"
 versionRange = "[6.0.0,)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.createportalintegration]]
-modId = "passengersportalfix"
-mandatory = true
-versionRange = "[0.0.1,)"
-ordering = "NONE"
-side = "SERVER"
+[[mixins]]
+config = "createportalintegration.mixins.json"
+
+[[mixins]]
+config = "createportalintegration_platform.mixins.json"

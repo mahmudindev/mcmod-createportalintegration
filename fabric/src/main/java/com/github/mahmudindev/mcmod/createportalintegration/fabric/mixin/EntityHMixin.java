@@ -117,13 +117,15 @@ public abstract class EntityHMixin {
 
     @WrapMethod(method = "changeDimension")
     private Entity changeDimensionPortalSupport(
-            ServerLevel serverLevel,
+            DimensionTransition dimensionTransition,
             Operation<Entity> original,
             @Share(
                     namespace = CreatePortalIntegration.MOD_ID + "_Entity",
                     value = "coupledControllers"
             ) LocalRef<List<MinecartController>> coupledControllersRef
     ) {
+        ServerLevel serverLevel = dimensionTransition.newLevel();
+
         if ((Object) this instanceof AbstractMinecart entity)
         //noinspection UnreachableCode
         {
@@ -134,7 +136,7 @@ public abstract class EntityHMixin {
                     entity.getUUID()
             );
             if (mcA != null) {
-                Entity entityX = original.call(serverLevel);
+                Entity entityX = original.call(dimensionTransition);
 
                 List<MinecartController> coupledControllers = coupledControllersRef.get();
                 if (entityX != null && coupledControllers != null) {
@@ -175,7 +177,7 @@ public abstract class EntityHMixin {
         {
             IOrientedContraptionEntity entityA = (IOrientedContraptionEntity) entity;
             if (!entityA.createportalintegration$getPortalSupported()) {
-                return original.call(serverLevel);
+                return original.call(dimensionTransition);
             }
 
             Contraption contraption = entity.getContraption();
@@ -189,7 +191,10 @@ public abstract class EntityHMixin {
                 }
             });
 
-            CompoundTag contraptionNBT = contraption.writeNBT(false);
+            CompoundTag contraptionNBT = contraption.writeNBT(
+                    entity.registryAccess(),
+                    false
+            );
             contraptionNBT.remove("UUID");
             contraptionNBT.remove("Pos");
             contraptionNBT.remove("Motion");
@@ -212,6 +217,6 @@ public abstract class EntityHMixin {
             return entityX;
         }
 
-        return original.call(serverLevel);
+        return original.call(dimensionTransition);
     }
 }

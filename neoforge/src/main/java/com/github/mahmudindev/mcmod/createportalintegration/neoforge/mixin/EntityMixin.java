@@ -1,4 +1,4 @@
-package com.github.mahmudindev.mcmod.createportalintegration.forge.mixin;
+package com.github.mahmudindev.mcmod.createportalintegration.neoforge.mixin;
 
 import com.github.mahmudindev.mcmod.createportalintegration.base.IAbstractMinecart;
 import com.github.mahmudindev.mcmod.createportalintegration.base.IOrientedContraptionEntity;
@@ -8,8 +8,8 @@ import com.simibubi.create.content.contraptions.minecart.capability.CapabilityMi
 import com.simibubi.create.content.contraptions.minecart.capability.MinecartController;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.util.ITeleporter;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -20,19 +20,20 @@ import java.util.UUID;
 @Mixin(Entity.class)
 public abstract class EntityMixin {
     @Inject(
-            method = "changeDimension(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraftforge/common/util/ITeleporter;)Lnet/minecraft/world/entity/Entity;",
+            method = "changeDimension",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/world/entity/Entity;removeAfterChangingDimensions()V"
+                    target = "Lnet/minecraft/world/level/portal/DimensionTransition$PostDimensionTransition;onTransition(Lnet/minecraft/world/entity/Entity;)V"
             )
     )
     private void changeDimensionContraptionEntitySetup(
-            ServerLevel serverLevel,
-            ITeleporter teleporter,
+            DimensionTransition dimensionTransition,
             CallbackInfoReturnable<Entity> cir,
             @Local(ordinal = 1) Entity entity
     ) {
         if ((Object) this instanceof IAbstractMinecart entityV) {
+            ServerLevel serverLevel = dimensionTransition.newLevel();
+
             CapabilityMinecartController.tick(serverLevel);
 
             MinecartController mcA = CapabilityMinecartController.getIfPresent(

@@ -1,7 +1,7 @@
 {
   "required": true,
-  "package": "com.github.mahmudindev.mcmod.createportalintegration.forge.mixin",
-  "compatibilityLevel": "JAVA_17",
+  "package": "com.github.mahmudindev.mcmod.createportalintegration.neoforge.mixin",
+  "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
   "client": [
   ],

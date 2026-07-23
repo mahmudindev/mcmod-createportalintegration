@@ -8,6 +8,7 @@ import com.simibubi.create.content.contraptions.minecart.capability.CapabilityMi
 import com.simibubi.create.content.contraptions.minecart.capability.MinecartController;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,15 +23,17 @@ public abstract class EntityMixin {
             method = "changeDimension",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/world/entity/Entity;removeAfterChangingDimensions()V"
+                    target = "Lnet/minecraft/world/level/portal/DimensionTransition$PostDimensionTransition;onTransition(Lnet/minecraft/world/entity/Entity;)V"
             )
     )
     private void changeDimensionEntitySetup(
-            ServerLevel serverLevel,
+            DimensionTransition dimensionTransition,
             CallbackInfoReturnable<Entity> cir,
             @Local(ordinal = 1) Entity entity
     ) {
         if ((Object) this instanceof IAbstractMinecart entityV) {
+            ServerLevel serverLevel = dimensionTransition.newLevel();
+
             CapabilityMinecartController.tick(serverLevel);
 
             MinecartController mcA = CapabilityMinecartController.getIfPresent(

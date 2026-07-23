@@ -1,6 +1,6 @@
-package com.github.mahmudindev.mcmod.createportalintegration.forge;
+package com.github.mahmudindev.mcmod.createportalintegration.neoforge;
 
-import net.minecraftforge.fml.loading.LoadingModList;
+import net.neoforged.fml.loading.LoadingModList;
 
 public class CreatePortalIntegrationExpectPlatformImpl {
     public static String getPlatformId() {

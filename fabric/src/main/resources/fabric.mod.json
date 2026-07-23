@@ -28,10 +28,9 @@
   ],
   "depends": {
     "fabricloader": ">=0.16.14",
-    "minecraft": "~1.20.1",
-    "java": ">=17",
-    "create": ">=6.0.0",
-    "passengersportalfix": ">=0.0.1"
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "create": ">=6.0.0"
   },
   "suggests": {
     "fabric-api": "*"

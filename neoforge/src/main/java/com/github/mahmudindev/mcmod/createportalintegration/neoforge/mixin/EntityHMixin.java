@@ -1,4 +1,4 @@
-package com.github.mahmudindev.mcmod.createportalintegration.forge.mixin;
+package com.github.mahmudindev.mcmod.createportalintegration.neoforge.mixin;
 
 import com.github.mahmudindev.mcmod.createportalintegration.CreatePortalIntegration;
 import com.github.mahmudindev.mcmod.createportalintegration.base.IAbstractMinecart;
@@ -24,8 +24,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.util.ITeleporter;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -37,7 +37,7 @@ import java.util.UUID;
 @Mixin(value = Entity.class, priority = 1500)
 public abstract class EntityHMixin {
     @WrapOperation(
-            method = "changeDimension(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraftforge/common/util/ITeleporter;)Lnet/minecraft/world/entity/Entity;",
+            method = "changeDimension",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/world/entity/Entity;unRide()V"
@@ -117,18 +117,19 @@ public abstract class EntityHMixin {
     }
 
     @WrapMethod(
-            method = "changeDimension(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraftforge/common/util/ITeleporter;)Lnet/minecraft/world/entity/Entity;",
+            method = "changeDimension",
             remap = false
     )
     private Entity changeDimensionPortalSupport(
-            ServerLevel serverLevel,
-            ITeleporter teleporter,
+            DimensionTransition dimensionTransition,
             Operation<Entity> original,
             @Share(
                     namespace = CreatePortalIntegration.MOD_ID + "_Entity",
                     value = "coupledControllers"
             ) LocalRef<List<MinecartController>> coupledControllersRef
     ) {
+        ServerLevel serverLevel = dimensionTransition.newLevel();
+
         if ((Object) this instanceof AbstractMinecart entity)
         //noinspection UnreachableCode
         {
@@ -139,7 +140,7 @@ public abstract class EntityHMixin {
                     entity.getUUID()
             );
             if (mcA != null) {
-                Entity entityX = original.call(serverLevel, teleporter);
+                Entity entityX = original.call(dimensionTransition);
 
                 List<MinecartController> coupledControllers = coupledControllersRef.get();
                 if (entityX != null && coupledControllers != null) {
@@ -180,7 +181,7 @@ public abstract class EntityHMixin {
         {
             IOrientedContraptionEntity entityA = (IOrientedContraptionEntity) entity;
             if (!entityA.createportalintegration$getPortalSupported()) {
-                return original.call(serverLevel, teleporter);
+                return original.call(dimensionTransition);
             }
 
             Contraption contraption = entity.getContraption();
@@ -194,7 +195,10 @@ public abstract class EntityHMixin {
                 }
             });
 
-            CompoundTag contraptionNBT = contraption.writeNBT(false);
+            CompoundTag contraptionNBT = contraption.writeNBT(
+                    entity.registryAccess(),
+                    false
+            );
             contraptionNBT.remove("UUID");
             contraptionNBT.remove("Pos");
             contraptionNBT.remove("Motion");
@@ -217,6 +221,6 @@ public abstract class EntityHMixin {
             return entityX;
         }
 
-        return original.call(serverLevel, teleporter);
+        return original.call(dimensionTransition);
     }
 }

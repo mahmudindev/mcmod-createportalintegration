@@ -1,41 +1,40 @@
 package com.github.mahmudindev.mcmod.createportalintegration.fabric.mixin.compat.dimensionlink;
 
 import com.github.mahmudindev.mcmod.createportalintegration.compat.DimensionLinkCompat;
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.simibubi.create.api.contraption.train.PortalTrackProvider;
 import com.simibubi.create.content.trains.track.AllPortalTracks;
+import net.createmod.catnip.math.BlockFace;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Portal;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(value = AllPortalTracks.class, priority = 1250)
 public abstract class AllPortalTracksHMixin {
-    @ModifyExpressionValue(
-            method = "nether",
-            at = @At(
-                    value = "FIELD",
-                    target = "Lnet/minecraft/world/level/Level;OVERWORLD:Lnet/minecraft/resources/ResourceKey;"
-            )
-    )
-    private static ResourceKey<Level> netherOverworldKey(
-            ResourceKey<Level> original,
-            ServerLevel level
+    @WrapMethod(method = "fromPortal", remap = false)
+    private static PortalTrackProvider.Exit fromPortalPrepare(
+            ServerLevel level,
+            BlockFace inboundTrack,
+            ResourceKey<Level> firstDimension,
+            ResourceKey<Level> secondDimension,
+            Portal portal,
+            Operation<PortalTrackProvider.Exit> original
     ) {
-        return DimensionLinkCompat.getWorldOverworld(level, original);
-    }
+        if (level.getBlockState(inboundTrack.getConnectedPos()).is(Blocks.NETHER_PORTAL)) {
+            firstDimension = DimensionLinkCompat.getWorldOverworld(
+                    level,
+                    firstDimension
+            );
+            secondDimension = DimensionLinkCompat.getWorldTheNether(
+                    level,
+                    secondDimension
+            );
+        }
 
-    @ModifyExpressionValue(
-            method = "nether",
-            at = @At(
-                    value = "FIELD",
-                    target = "Lnet/minecraft/world/level/Level;NETHER:Lnet/minecraft/resources/ResourceKey;"
-            )
-    )
-    private static ResourceKey<Level> netherNetherKey(
-            ResourceKey<Level> original,
-            ServerLevel level
-    ) {
-        return DimensionLinkCompat.getWorldTheNether(level, original);
+        return original.call(level, inboundTrack, firstDimension, secondDimension, portal);
     }
 }

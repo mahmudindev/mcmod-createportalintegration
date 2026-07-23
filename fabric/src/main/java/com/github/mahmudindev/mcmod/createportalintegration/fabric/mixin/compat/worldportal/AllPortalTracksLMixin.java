@@ -23,14 +23,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(value = AllPortalTracks.class, priority = 750)
 public abstract class AllPortalTracksLMixin {
     @WrapOperation(
-            method = "fromProbe",
+            method = "fromPortal",
             at = @At(
                     value = "NEW",
                     target = "com/simibubi/create/content/contraptions/glue/SuperGlueEntity"
             ),
             remap = false
     )
-    private static SuperGlueEntity fromProbePrepare(
+    private static SuperGlueEntity fromPortalPrepare(
             Level world,
             AABB boundingBox,
             Operation<SuperGlueEntity> original,
@@ -46,6 +46,7 @@ public abstract class AllPortalTracksLMixin {
             MinecraftServer server = serverLevel.getServer();
             ServerLevel serverLevelX = server.getLevel(WorldPortalCompat.setupPortal(
                     entity,
+                    blockPos,
                     otherLevel.get().dimension()
             ));
             if (serverLevelX != null) {
